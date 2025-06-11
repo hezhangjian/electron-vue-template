@@ -1,15 +1,21 @@
 {
   "name": "npm-package-name",
   "version": "0.0.1",
+  "private": true,
   "main": "build/main/main.js",
   "scripts": {
-    "build": "pnpm clean && tsc && cpx \"src/renderer/**/*.{html,css,png}\" build/renderer",
+    "build": "pnpm clean && pnpm build:main && pnpm build:renderer",
+    "build:main": "tsc -p src/main/tsconfig.json",
+    "build:renderer": "vite build",
     "clean": "rimraf dist && rimraf build",
-    "start": "pnpm build && electron .",
-    "package": "electron-builder"
+    "dev": "vite",
+    "package": "pnpm build && electron-builder",
+    "preview": "vite preview",
+    "start": "pnpm clean && pnpm build && electron ."
   },
   "build": {
     "appId": "com.your-app-name",
+    "asar": false,
     "productName": "Your App Name",
     "directories": {
       "output": "dist"
@@ -22,10 +28,16 @@
       "category": "public.app-category.utilities"
     }
   },
+  "dependencies": {
+    "vue": "^3.4.21"
+  },
   "devDependencies": {
     "@types/node": "^22.15.18",
+    "@vitejs/plugin-vue": "^5.0.4",
     "electron": "^36.4.0",
     "electron-builder": "^24.13.3",
-    "typescript": "^5.8.3"
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3",
+    "vite": "^5.1.6"
   }
 }
